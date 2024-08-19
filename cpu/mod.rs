@@ -1,1 +1,2 @@
-use cpu;
+use cpu::*;
+use cpu_const::*;
