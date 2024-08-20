@@ -1,2 +1,3 @@
-use cpu::*;
-use cpu_const::*;
+pub mod cpu;
+pub mod cpu_data;
+pub mod instructions;
