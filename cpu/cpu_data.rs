@@ -7,7 +7,6 @@ pub const BOTTOM_4_BITS : u8 = 0b1111;
 
 // Breaks the instruction into basic logical groups
 pub enum InstructionType {
-    Arithmetic,
     LoadStore,
     Branching,
     Logic,
