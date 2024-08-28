@@ -1,0 +1,3 @@
+# exclude everything but rust files and Cargo
+!Cargo.toml
+!*.rs
