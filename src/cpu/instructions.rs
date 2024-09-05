@@ -1,10 +1,10 @@
 extern crate phf;
 
-use crate::cpu::cpu_data::*;
 use self::phf::phf_map;
+use crate::cpu::cpu_data::*;
 
 // Map of u8 opcode hex to RawOpcode
-static NES_VALID_OPCODES : phf::Map<u8, Instruction<'static>> = phf_map! {
+static NES_VALID_OPCODES: phf::Map<u8, Instruction<'static>> = phf_map! {
     // Add with Carry
     0x69u8 => Instruction::new("ADC",
         InstructionType::Arithmetic,
@@ -465,7 +465,7 @@ static NES_VALID_OPCODES : phf::Map<u8, Instruction<'static>> = phf_map! {
         /* cycles = */ 4,
         /* length_bytes = */ 2
     ),
-    
+
     // Compare Y Register
     0xC0u8 => Instruction::new("CPY",
         InstructionType::Arithmetic,
@@ -531,7 +531,608 @@ static NES_VALID_OPCODES : phf::Map<u8, Instruction<'static>> = phf_map! {
         /* extra_information = */ 0,
         /* cycles = */ 7,
         /* length_bytes = */ 3
+    ),
+
+    // Decrement X
+    0xCAu8 => Instruction::new("DEX",
+        InstructionType::IncrementDecrement,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterX,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes =  */ 1
+    ),
+
+    // Decrement Y
+    0x88u8 => Instruction::new("DEY",
+        InstructionType::IncrementDecrement,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterY,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes =  */ 1
+    ),
+
+    // Exclusive OR
+    0x49u8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::Immediate,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 2
+    ),
+    0x45u8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0x55u8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0x4Du8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x5Du8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x59u8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::AbsoluteY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x41u8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::IndirectX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0x51u8 => Instruction::new("EOR",
+        InstructionType::Logical,
+        AddressingMode::IndirectY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+    
+    // Increment Memory
+    0xE6u8 => Instruction::new("INC",
+        InstructionType::IncrementDecrement,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+    0xF6u8 => Instruction::new("INC",
+        InstructionType::IncrementDecrement,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0xEEu8 => Instruction::new("INC",
+        InstructionType::IncrementDecrement,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 3
+    ),
+    0xFEu8 => Instruction::new("INC",
+        InstructionType::IncrementDecrement,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 7,
+        /* length_bytes = */ 3
+    ),
+
+    // Increment X Register
+    0xE8u8 => Instruction::new("INX",
+        InstructionType::IncrementDecrement,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterX,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Increment Y Register
+    0xC8u8 => Instruction::new("INY",
+        InstructionType::IncrementDecrement,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterY,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Jump
+    0x4Cu8 => Instruction::new("JMP",
+        InstructionType::JumpCall,
+        AddressingMode::Absolute,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::ProgramCounter,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 3
+    ),
+    0x6Cu8 => Instruction::new("JMP",
+        InstructionType::JumpCall,
+        AddressingMode::Absolute,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::ProgramCounter,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 3
+    ),
+
+    // Jump to Subroutine
+    0x20u8 => Instruction::new("JSR",
+        InstructionType::JumpCall,
+        AddressingMode::Absolute,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::ProgramCounter,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 3
+    ),
+
+    // Load Accumulator
+    0xA9u8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::Immediate,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 2
+    ),
+    0xA5u8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0xB5u8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0xADu8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xBDu8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xB9u8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::AbsoluteY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xA1u8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::IndirectX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0xB1u8 => Instruction::new("LDA",
+        InstructionType::LoadStore,
+        AddressingMode::IndirectY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+
+    // Load X Register
+    0xA2u8 => Instruction::new("LDX",
+        InstructionType::LoadStore,
+        AddressingMode::Immediate,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 2
+    ),
+    0xA6u8 => Instruction::new("LDX",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0xB6u8 => Instruction::new("LDX",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPageY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0xAEu8 => Instruction::new("LDX",
+        InstructionType::LoadStore,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xBEu8 => Instruction::new("LDX",
+        InstructionType::LoadStore,
+        AddressingMode::AbsoluteY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+
+    // Load Y Register
+    0xA0u8 => Instruction::new("LDY",
+        InstructionType::LoadStore,
+        AddressingMode::Immediate,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 2
+    ),
+    0xA4u8 => Instruction::new("LDY",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0xB4u8 => Instruction::new("LDY",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0xACu8 => Instruction::new("LDY",
+        InstructionType::LoadStore,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xBCu8 => Instruction::new("LDY",
+        InstructionType::LoadStore,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+
+    // Logical Shift Right
+    0x4Au8 => Instruction::new("LSR",
+        InstructionType::Shift,
+        AddressingMode::Accumulator,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+    0x46u8 => Instruction::new("LSR",
+        InstructionType::Shift,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+    0x56u8 => Instruction::new("LSR",
+        InstructionType::Shift,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0x4Eu8 => Instruction::new("LSR",
+        InstructionType::Shift,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 3
+    ),
+    0x5Eu8 => Instruction::new("LSR",
+        InstructionType::Shift,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 7,
+        /* length_bytes = */ 3
+    ),
+
+    // No Operation
+    0xEAu8 => Instruction::new("NOP",
+        InstructionType::SystemFunction,
+        AddressingMode::Implicit,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::NoLoadStore,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+     // Inclusive OR
+    0x09u8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::Immediate,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 2
+    ),
+    0x05u8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0x15u8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0x0Du8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x1Du8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x19u8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::AbsoluteY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x01u8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::IndirectX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0x11u8 => Instruction::new("ORA",
+        InstructionType::Logical,
+        AddressingMode::IndirectY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+
+    // Push Accumulator
+    0x48u8 => Instruction::new("PHA",
+        InstructionType::StackOperation,
+        AddressingMode::Implicit,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 1
+    ),
+
+    // Push Processor Status
+    0x08u8 => Instruction::new("PHP",
+        InstructionType::StackOperation,
+        AddressingMode::Implicit,
+        LoadStoreLocation::Status,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 1
+    ),
+
+    // Pull Accumulator
+    0x68u8 => Instruction::new("PLA",
+        InstructionType::StackOperation,
+        AddressingMode::Implicit,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 1
+    ),
+
+    // Pull Processor Status
+    0x28u8 => Instruction::new("PLP",
+        InstructionType::StackOperation,
+        AddressingMode::Implicit,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Status,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 1
+    ),
+
+    // Rotate Right
+    0x6Au8 => Instruction::new("ROR",
+        InstructionType::Shift,
+        AddressingMode::Accumulator,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+    0x66u8 => Instruction::new("ROR",
+        InstructionType::Shift,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+    0x76u8 => Instruction::new("ROR",
+        InstructionType::Shift,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0x6Eu8 => Instruction::new("ROR",
+        InstructionType::Shift,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 3
+    ),
+    0x7Eu8 => Instruction::new("ROR",
+        InstructionType::Shift,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 7,
+        /* length_bytes = */ 3
+    ),
+
+    // Return from Interrupt
+    0x40u8 => Instruction::new("RTI",
+        InstructionType::SystemFunction,
+        AddressingMode::Implicit,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::NoLoadStore,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 1
+    ),
+
+    // Return from Subroutine
+    0x60u8 => Instruction::new("RTS",
+        InstructionType::SystemFunction,
+        AddressingMode::Implicit,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::NoLoadStore,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 1
     )
 
-    // TODO: Rest of opcodes, starting with DEX
+    // TODO: Keep implementing instructions, continuing with SBC
+    // You got this :) <3
 };
