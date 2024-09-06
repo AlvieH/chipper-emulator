@@ -1131,8 +1131,301 @@ static NES_VALID_OPCODES: phf::Map<u8, Instruction<'static>> = phf_map! {
         /* extra_information = */ 0,
         /* cycles = */ 6,
         /* length_bytes = */ 1
-    )
+    ),
 
-    // TODO: Keep implementing instructions, continuing with SBC
-    // You got this :) <3
+    // Subtract with Carry
+    0xE9u8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::Immediate,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 2
+    ),
+    0xE5u8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0xF5u8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0xEDu8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xFDu8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xF9u8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::AbsoluteY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0xE1u8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::IndirectX,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0xF1u8 => Instruction::new("SBC",
+        InstructionType::Arithmetic,
+        AddressingMode::IndirectY,
+        LoadStoreLocation::Memory,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 2
+    ),
+
+    // Set Carry Flag
+    0x38u8 => Instruction::new("SEC",
+        InstructionType::StatusFlag,
+        AddressingMode::Implicit,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::Status,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Set Decimal Flag
+    0xF8u8 => Instruction::new("SED",
+        InstructionType::StatusFlag,
+        AddressingMode::Implicit,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::Status,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Set Interrupt Disable
+    0x78u8 => Instruction::new("SEI",
+        InstructionType::StatusFlag,
+        AddressingMode::Implicit,
+        LoadStoreLocation::NoLoadStore,
+        LoadStoreLocation::Status,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Store Accumulator
+    0x85u8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0x95u8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0x8Du8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+    0x9Du8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::AbsoluteX,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 3
+    ),
+    0x99u8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::AbsoluteY,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 5,
+        /* length_bytes = */ 3
+    ),
+    0x81u8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::IndirectX,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+    0x91u8 => Instruction::new("STA",
+        InstructionType::LoadStore,
+        AddressingMode::IndirectY,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 6,
+        /* length_bytes = */ 2
+    ),
+
+    // Store X Register
+    0x86u8 => Instruction::new("STX",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0x96u8 => Instruction::new("STX",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPageY,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0x8Eu8 => Instruction::new("STX",
+        InstructionType::LoadStore,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+
+    // Store Y Register
+    0x84u8 => Instruction::new("STY",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPage,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 3,
+        /* length_bytes = */ 2
+    ),
+    0x94u8 => Instruction::new("STY",
+        InstructionType::LoadStore,
+        AddressingMode::ZeroPageX,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 2
+    ),
+    0x8Cu8 => Instruction::new("STY",
+        InstructionType::LoadStore,
+        AddressingMode::Absolute,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::Memory,
+        /* extra_information = */ 0,
+        /* cycles = */ 4,
+        /* length_bytes = */ 3
+    ),
+
+    // Transfer Accumulator to X
+    0xAAu8 => Instruction::new("TAX",
+        InstructionType::RegisterTransfer,
+        AddressingMode::Implicit,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Transfer Accumulator to Y
+    0xA8u8 => Instruction::new("TAY",
+        InstructionType::RegisterTransfer,
+        AddressingMode::Implicit,
+        LoadStoreLocation::Accumulator,
+        LoadStoreLocation::RegisterY,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Transfer Stack Pointer to X
+    0xBAu8 => Instruction::new("TSX",
+        InstructionType::RegisterTransfer,
+        AddressingMode::Implicit,
+        LoadStoreLocation::StackPointer,
+        LoadStoreLocation::RegisterX,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Transfer X to Accumulator
+    0x8Au8 => Instruction::new("TXA",
+        InstructionType::RegisterTransfer,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterX,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Transfer X to Stack Pointer
+    0x9Au8 => Instruction::new("TXS",
+        InstructionType::RegisterTransfer,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterX,
+        LoadStoreLocation::StackPointer,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
+
+    // Transfer Y to Accumulator
+    0x98u8 => Instruction::new("TYA",
+        InstructionType::RegisterTransfer,
+        AddressingMode::Implicit,
+        LoadStoreLocation::RegisterY,
+        LoadStoreLocation::Accumulator,
+        /* extra_information = */ 0,
+        /* cycles = */ 2,
+        /* length_bytes = */ 1
+    ),
 };
